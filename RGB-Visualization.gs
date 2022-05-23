@@ -1,7 +1,5 @@
 function onEdit(e) {
   try {
-    const ss = SpreadsheetApp.getActiveSheet();
-    const sheet = SpreadsheetApp.getActiveSheet();
     var rng = e.range;
     Logger.log(e.triggerUid);
     if(rng.isBlank()){
