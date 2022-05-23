@@ -10,10 +10,11 @@ function onEdit(e) {
     }
 
     var clr = e.value;
-    var firstComma = clr.indexOf(",");
-    var secondComma = clr.indexOf(",",firstComma + 1)
+    var countComma = (clr.match(/,/g) || []).length;
     
     if(clr.length <= 11 && clr.length >= 5 && clr.count(",") == 2){
+      let firstComma = clr.indexOf(",");
+      let secondComma = clr.indexOf(",",firstComma + 1);
       rng.setNote(null);
       rng.setBackgroundRGB(clr.slice(0,firstComma),clr.slice(firstComma + 1, secondComma), clr.slice(secondComma + 1));
     }
