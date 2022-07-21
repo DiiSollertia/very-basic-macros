@@ -16,11 +16,9 @@ function convertRGB(type){
   convSheet.getDataRange().clearContent();
 
   var rangeData = rgbSheet.getDataRange();
-  var lastColumn = rangeData.getLastColumn();
-  var lastRow = rangeData.getLastRow();
-  var searchRange = rgbSheet.getRange(1,1, lastRow-1, lastColumn-1);
-  var pasteRange = convSheet.getRange(1,1, lastRow-1, lastColumn-1);
-  var rangeValues = searchRange.getValues();
+  var rangeNotate = rangeData.getA1Notation();
+  var pasteRange = convSheet.getRange(rangeNotate);
+  var rangeValues = rangeData.getValues();
 
   rangeValues.forEach(rowFunc);
 
