@@ -1,19 +1,24 @@
 Attribute VB_Name = "Module2"
 Sub CreateDocVarAndUpdateFields()
-On Error GoTo ErrorHandler
+
 'Connect using Early Binding.
 'Remember to set the reference to the Word Object Library
 'In VBE Editor Tools -> References -> Microsoft Word x.xx Object Library
-Dim WordApp As Object, WordDoc As Object, Sheet As Object
+Dim WordApp As Object, WordDoc As Object, Sheet As Object, FPath As String
+Set Sheet = Worksheets("Utility")
+FPath = Sheet.Range("D2").Value
+
 'Initiate Word session
+'Unable to reliably check and use currently open files
 Set WordApp = CreateObject("Word.Application")
 'New Apps will be hidden by default, so make visible if needed for debugging
 WordApp.Visible = True
-Set Sheet = Worksheets("Utility")
+'Set relevant doc
 Debug.Print "Debug String 1: " & Sheet.Range("D2") 'Debug String 1
-Set WordDoc = WordApp.Documents.Open(Sheet.Range("D2").Value)
+Set WordDoc = WordApp.Documents.Open(FPath)
 Debug.Print "Debug String 2: " & TypeName(WordDoc) 'Debug String 2
 
+On Error GoTo ErrorHandler
 With WordDoc
 'Clear all pre-existing DocumentVariables
 Dim i As Long
@@ -132,11 +137,11 @@ Next oTOA
 
 MsgBox "Task completed, closing Word Document..."
 'Close application and release memory
-.Close
+.Close SaveChanges:=Word.wdSaveChanges
 End With
 
-Application.ScreenUpdating = True
-Application.DisplayAlerts = Word.wdAlertsAll
+WordApp.ScreenUpdating = True
+WordApp.DisplayAlerts = Word.wdAlertsAll
 WordApp.Quit
 Set rngStory = Nothing
 Set WordDoc = Nothing
@@ -151,4 +156,11 @@ If Err.Number <> 0 Then
     MsgBox Msg, , "Error", Err.HelpFile, Err.HelpContext
 End If
 Resume Next
+
+NoFile:
+If Err.Number <> 0 Then
+    MsgBox "File does not exist at the path specified."
+    Set WordApp = Nothing
+End If
+Exit Sub
 End Sub
