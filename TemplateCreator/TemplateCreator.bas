@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module2"
+Attribute VB_Name = "TemplateCreator"
 Sub CreateDocVarAndUpdateFields()
 
 'Connect using Early Binding.
@@ -15,6 +15,7 @@ Set WordApp = CreateObject("Word.Application")
 WordApp.Visible = True
 'Set relevant doc
 Debug.Print "Debug String 1: " & Sheet.Range("D2") 'Debug String 1
+MsgBox "Reminder: Please ensure that the target Word document is already closed."
 Set WordDoc = WordApp.Documents.Open(FPath)
 Debug.Print "Debug String 2: " & TypeName(WordDoc) 'Debug String 2
 
